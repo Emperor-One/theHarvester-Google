@@ -176,6 +176,7 @@ class Core:
             'duckduckgo',
             'fullhunt',
             'github-code',
+            'google',
             'hackertarget',
             'hunter',
             'hunterhow',

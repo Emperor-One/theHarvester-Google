@@ -30,6 +30,7 @@ from theHarvester.discovery import (
     duckduckgosearch,
     fullhuntsearch,
     githubcode,
+    googlesearch,
     hackertarget,
     huntersearch,
     intelxsearch,
@@ -79,6 +80,13 @@ async def start(rest_args: argparse.Namespace | None = None):
         help='Start with result number X, default=0.',
         default=0,
         type=int,
+    )
+    parser.add_argument(
+        '-g', 
+        '--google-dork', 
+        help='Use Google Dorks for Google search.', 
+        default=False, 
+        action='store_true'
     )
     parser.add_argument(
         '-p',
@@ -149,7 +157,7 @@ async def start(rest_args: argparse.Namespace | None = None):
         '-b',
         '--source',
         help="""anubis, baidu, bevigil, binaryedge, bing, bingapi, bufferoverun, brave,
-                            censys, certspotter, criminalip, crtsh, dnsdumpster, duckduckgo, fullhunt, github-code,
+                            censys, certspotter, criminalip, crtsh, dnsdumpster, duckduckgo, fullhunt, github-code, google,
                             hackertarget, hunter, hunterhow, intelx, netlas, onyphe, otx, pentesttools, projectdiscovery,
                             rapiddns, rocketreach, securityTrails, sitedossier, subdomaincenter, subdomainfinderc99, threatminer, tomba,
                             urlscan, virustotal, yahoo, zoomeye""",
@@ -230,6 +238,7 @@ async def start(rest_args: argparse.Namespace | None = None):
     # If the user specifies
     full: list = []
     ips: list = []
+    google_dorking = args.google_dork
     host_ip: list = []
     limit: int = args.limit
     shodan = args.shodan
@@ -555,6 +564,11 @@ async def start(rest_args: argparse.Namespace | None = None):
                         )
                     except MissingKey as ex:
                         print(ex)
+
+                elif engineitem == 'google':
+                    google_search = googlesearch.SearchGoogle(word, limit, start)
+                    stor_lst.append(store(google_search, engineitem, process_param=google_dorking, store_host=True,
+                                          store_emails=True))
 
                 elif engineitem == 'hackertarget':
                     hackertarget_search = hackertarget.SearchHackerTarget(word)

@@ -2,6 +2,8 @@ import random
 
 from theHarvester.lib.core import AsyncFetcher, Core
 
+googleUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 ' \
+           'Safari/537.36 '
 
 async def splitter(links):
     """
@@ -63,7 +65,7 @@ async def search(text: str) -> bool:
             or 'http://www.google.com/sorry/index' in line
             or 'https://www.google.com/sorry/index' in line
         ):
-            # print('\tGoogle is blocking your IP due to too many automated requests, wait or change your IP')
+            print('\tGoogle is blocking your IP due to too many automated requests, wait or change your IP')
             return True
     return False
 
